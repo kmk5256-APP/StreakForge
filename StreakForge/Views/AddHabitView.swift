@@ -4,6 +4,7 @@ import SwiftData
 struct AddHabitView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var habitToEdit: Habit?
 
     @State private var name = ""
@@ -31,6 +32,7 @@ struct AddHabitView: View {
         Choice(id: "bed.double.fill", name: "Bed"),
         Choice(id: "cup.and.saucer.fill", name: "Cup"),
         Choice(id: "pencil.and.outline", name: "Pencil"),
+        Choice(id: "sun.max.fill", name: "Sun"),
     ]
     private let colors = [
         Choice(id: "#6366F1", name: "Indigo"),
@@ -48,8 +50,8 @@ struct AddHabitView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Habit Name") {
-                    TextField("Read, stretch, walk…", text: $name)
+                Section("Name") {
+                    TextField("Habit name", text: $name)
                         .accessibilityIdentifier("habit.name")
                 }
 
@@ -62,7 +64,7 @@ struct AddHabitView: View {
                                 Image(systemName: icon.id)
                                     .font(.title3)
                                     .frame(width: 44, height: 44)
-                                    .background(selectedIcon == icon.id ? Color(hex: selectedColor).opacity(0.25) : .clear, in: Circle())
+                                    .background(selectedIcon == icon.id ? Color(hex: selectedColor).opacity(0.22) : .clear, in: Circle())
                                     .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
@@ -70,6 +72,7 @@ struct AddHabitView: View {
                             .accessibilityAddTraits(selectedIcon == icon.id ? .isSelected : [])
                         }
                     }
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: selectedIcon)
                 }
 
                 Section("Color") {
@@ -94,6 +97,7 @@ struct AddHabitView: View {
                             .accessibilityAddTraits(selectedColor == color.id ? .isSelected : [])
                         }
                     }
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: selectedColor)
                 }
             }
             .navigationTitle(habitToEdit == nil ? "New Habit" : "Edit Habit")
@@ -104,6 +108,7 @@ struct AddHabitView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(habitToEdit == nil ? "Add" : "Save", action: saveHabit)
+                        .fontWeight(.semibold)
                         .disabled(trimmedName.isEmpty)
                         .accessibilityIdentifier("habit.save")
                 }

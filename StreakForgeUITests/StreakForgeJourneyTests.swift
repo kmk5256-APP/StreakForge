@@ -58,6 +58,7 @@ final class StreakForgeJourneyTests: XCTestCase {
         for name in habits.suffix(2) {
             let button = app.buttons["Complete \(name)"]
             if button.exists { button.tap() }
+            XCTAssertTrue(app.buttons["Undo completion for \(name)"].waitForExistence(timeout: 5))
         }
         capture("StreakForge-Habits")
         app.staticTexts["Morning walk"].tap()
