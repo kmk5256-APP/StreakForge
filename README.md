@@ -8,24 +8,18 @@ Forge unbreakable streaks with beautiful visuals, satisfying interactions, and z
 - One-tap completion with spring animations & haptics
 - Live streak counter + best streak tracking
 - Animated progress rings and 30-day heat map
-- Milestone celebrations (7, 14, 30, 100 days)
+- Milestone celebrations at 7, 14, 30, 60, 100 and 365 days
 - Full CRUD: add, edit, delete habits
 - Custom icons & colors
 - SwiftData persistence (private, offline)
 - Adaptive dark/light mode with gradient backgrounds
 - Clean, premium feel
 
-## Getting Started
-1. Clone this repo
-2. Open Xcode → File → New → Project → iOS App
-   - Interface: SwiftUI
-   - Language: Swift
-   - Storage: SwiftData
-   - Minimum: iOS 17+
-3. Name it **StreakForge**
-4. Delete the generated ContentView.swift / App file
-5. Drag the entire `StreakForge/` folder into the project navigator
-6. Build & Run 🚀
+## Build and Test
+
+Open `StreakForge.xcodeproj`, select the StreakForge scheme, and choose an iPhone or iPad simulator. Run the app with **Product > Run** and the regression tests with **Product > Test**. The app targets iOS and iPadOS 17 or later and builds with Xcode 27.2.
+
+For a signed device or App Store build, choose your Apple Developer team in the app target's Signing & Capabilities tab.
 
 ## Next Ideas
 - Local notifications / reminders

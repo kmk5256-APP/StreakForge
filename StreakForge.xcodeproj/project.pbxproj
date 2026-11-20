@@ -1,0 +1,543 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		19925CD32D4159D552C9D615 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D8FE3D853663D1D2E4D5ABB /* Assets.xcassets */; };
+		20E3F51D13058453CAC167A4 /* StreakForgeJourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4792B82F84B04B2BF21C854 /* StreakForgeJourneyTests.swift */; };
+		29E479E788FD85773B63B50D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F7A815C2714739CAFA202E3C /* PrivacyInfo.xcprivacy */; };
+		3102ADE138F2168D9D92CD70 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BF0E3B83A872E16CAA934A /* AddHabitView.swift */; };
+		470996C5376F323EE2FABFBA /* StreakForgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB70448D5D7DF2E5E354D2B /* StreakForgeApp.swift */; };
+		6E47D9200B4C3218A8B3E3DB /* HabitProgressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFA4532A50E16FD2CC59A56 /* HabitProgressTests.swift */; };
+		82E172D4564361CC86B37DC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD761F4D3F59D45245304697 /* ContentView.swift */; };
+		BD9625863C26867C3996857C /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0536A411D3856D100468462E /* Habit.swift */; };
+		F6D52808C64D18CACFC6B70D /* HabitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD61CA5429B57BFC1F9F2B /* HabitDetailView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0250B737FA1D36834C3CC24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DBB479F6A0F17AF4DAD5BD0A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3ED9208A163C32807D9633B;
+			remoteInfo = StreakForge;
+		};
+		E6B875DFC53AFB9AEB372F37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DBB479F6A0F17AF4DAD5BD0A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3ED9208A163C32807D9633B;
+			remoteInfo = StreakForge;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0536A411D3856D100468462E /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
+		1D8FE3D853663D1D2E4D5ABB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5FFA4532A50E16FD2CC59A56 /* HabitProgressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitProgressTests.swift; sourceTree = "<group>"; };
+		7DB69C2B52455C315B037FEE /* StreakForgeUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = StreakForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FF47FC28002C2658632CAA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A15669CB2907EB6BB40F0FE2 /* StreakForge.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = StreakForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD761F4D3F59D45245304697 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B4792B82F84B04B2BF21C854 /* StreakForgeJourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakForgeJourneyTests.swift; sourceTree = "<group>"; };
+		C2BF0E3B83A872E16CAA934A /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
+		CDB70448D5D7DF2E5E354D2B /* StreakForgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakForgeApp.swift; sourceTree = "<group>"; };
+		CEBD61CA5429B57BFC1F9F2B /* HabitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailView.swift; sourceTree = "<group>"; };
+		D4F69BB38D35E57F9257D8B6 /* StreakForgeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = StreakForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7A815C2714739CAFA202E3C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		02391ED2D880C2A1DF02F6F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C2BF0E3B83A872E16CAA934A /* AddHabitView.swift */,
+				CEBD61CA5429B57BFC1F9F2B /* HabitDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		49F07F000755E5BB83F851B0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0536A411D3856D100468462E /* Habit.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		569166F0C044D368A7112EA6 /* StreakForge */ = {
+			isa = PBXGroup;
+			children = (
+				1D8FE3D853663D1D2E4D5ABB /* Assets.xcassets */,
+				AD761F4D3F59D45245304697 /* ContentView.swift */,
+				7FF47FC28002C2658632CAA5 /* Info.plist */,
+				F7A815C2714739CAFA202E3C /* PrivacyInfo.xcprivacy */,
+				CDB70448D5D7DF2E5E354D2B /* StreakForgeApp.swift */,
+				49F07F000755E5BB83F851B0 /* Models */,
+				02391ED2D880C2A1DF02F6F9 /* Views */,
+			);
+			path = StreakForge;
+			sourceTree = "<group>";
+		};
+		6C77E196A6DFE26F469E6ECF /* StreakForgeTests */ = {
+			isa = PBXGroup;
+			children = (
+				5FFA4532A50E16FD2CC59A56 /* HabitProgressTests.swift */,
+			);
+			path = StreakForgeTests;
+			sourceTree = "<group>";
+		};
+		B797B5D9814393AF4F6871E9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A15669CB2907EB6BB40F0FE2 /* StreakForge.app */,
+				D4F69BB38D35E57F9257D8B6 /* StreakForgeTests.xctest */,
+				7DB69C2B52455C315B037FEE /* StreakForgeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BD18588E295426D2C4DA026E /* StreakForgeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B4792B82F84B04B2BF21C854 /* StreakForgeJourneyTests.swift */,
+			);
+			path = StreakForgeUITests;
+			sourceTree = "<group>";
+		};
+		F7D72D3C11F70B565DCF6D45 = {
+			isa = PBXGroup;
+			children = (
+				569166F0C044D368A7112EA6 /* StreakForge */,
+				6C77E196A6DFE26F469E6ECF /* StreakForgeTests */,
+				BD18588E295426D2C4DA026E /* StreakForgeUITests */,
+				B797B5D9814393AF4F6871E9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03E4FB90D4F975372881DD6B /* StreakForgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F72FE23E72C6B06010DBA2F /* Build configuration list for PBXNativeTarget "StreakForgeTests" */;
+			buildPhases = (
+				5F94A785A2628F415634BDB1 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BD7E72B86442D794AAE19DF5 /* PBXTargetDependency */,
+			);
+			name = StreakForgeTests;
+			packageProductDependencies = (
+			);
+			productName = StreakForgeTests;
+			productReference = D4F69BB38D35E57F9257D8B6 /* StreakForgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9EE3E2DECE4730BDFA9313FB /* StreakForgeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2B7EF27DDD52102AB763D40 /* Build configuration list for PBXNativeTarget "StreakForgeUITests" */;
+			buildPhases = (
+				EB4FB1A921DAE58810FB0653 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1D85FE2C684960BD616C9EF4 /* PBXTargetDependency */,
+			);
+			name = StreakForgeUITests;
+			packageProductDependencies = (
+			);
+			productName = StreakForgeUITests;
+			productReference = 7DB69C2B52455C315B037FEE /* StreakForgeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F3ED9208A163C32807D9633B /* StreakForge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D50AD6B0948DFF16A750F998 /* Build configuration list for PBXNativeTarget "StreakForge" */;
+			buildPhases = (
+				F4634BF7462E5892566B873A /* Sources */,
+				E02CF29F6D2C0CE6D92F5316 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StreakForge;
+			packageProductDependencies = (
+			);
+			productName = StreakForge;
+			productReference = A15669CB2907EB6BB40F0FE2 /* StreakForge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DBB479F6A0F17AF4DAD5BD0A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					9EE3E2DECE4730BDFA9313FB = {
+						TestTargetID = F3ED9208A163C32807D9633B;
+					};
+					F3ED9208A163C32807D9633B = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F0D91CE062C543FF8DEA8B26 /* Build configuration list for PBXProject "StreakForge" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F7D72D3C11F70B565DCF6D45;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B797B5D9814393AF4F6871E9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F3ED9208A163C32807D9633B /* StreakForge */,
+				03E4FB90D4F975372881DD6B /* StreakForgeTests */,
+				9EE3E2DECE4730BDFA9313FB /* StreakForgeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E02CF29F6D2C0CE6D92F5316 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19925CD32D4159D552C9D615 /* Assets.xcassets in Resources */,
+				29E479E788FD85773B63B50D /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5F94A785A2628F415634BDB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E47D9200B4C3218A8B3E3DB /* HabitProgressTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB4FB1A921DAE58810FB0653 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20E3F51D13058453CAC167A4 /* StreakForgeJourneyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F4634BF7462E5892566B873A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3102ADE138F2168D9D92CD70 /* AddHabitView.swift in Sources */,
+				82E172D4564361CC86B37DC0 /* ContentView.swift in Sources */,
+				BD9625863C26867C3996857C /* Habit.swift in Sources */,
+				F6D52808C64D18CACFC6B70D /* HabitDetailView.swift in Sources */,
+				470996C5376F323EE2FABFBA /* StreakForgeApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1D85FE2C684960BD616C9EF4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3ED9208A163C32807D9633B /* StreakForge */;
+			targetProxy = 0250B737FA1D36834C3CC24B /* PBXContainerItemProxy */;
+		};
+		BD7E72B86442D794AAE19DF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3ED9208A163C32807D9633B /* StreakForge */;
+			targetProxy = E6B875DFC53AFB9AEB372F37 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09D38BA4F6E7E5544A19369F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = StreakForge/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.ai2life.streakforge;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		375D862EFF9B3B4F18EB7F25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.ai2life.streakforge.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StreakForge.app/StreakForge";
+			};
+			name = Debug;
+		};
+		426BFE1A0EAC161EA6AF7C5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = StreakForge/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.ai2life.streakforge;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7EBF218A44A1B2C676DF8BD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9DB5144383F3885EE1622F75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.ai2life.streakforge.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = StreakForge;
+			};
+			name = Debug;
+		};
+		B8BC01CA4DCE87579B08C1BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.ai2life.streakforge.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = StreakForge;
+			};
+			name = Release;
+		};
+		E03906829F2DDFA4925E6FEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F88594C90D37D97F0F20A8CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.ai2life.streakforge.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StreakForge.app/StreakForge";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6F72FE23E72C6B06010DBA2F /* Build configuration list for PBXNativeTarget "StreakForgeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				375D862EFF9B3B4F18EB7F25 /* Debug */,
+				F88594C90D37D97F0F20A8CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D2B7EF27DDD52102AB763D40 /* Build configuration list for PBXNativeTarget "StreakForgeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9DB5144383F3885EE1622F75 /* Debug */,
+				B8BC01CA4DCE87579B08C1BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D50AD6B0948DFF16A750F998 /* Build configuration list for PBXNativeTarget "StreakForge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				426BFE1A0EAC161EA6AF7C5E /* Debug */,
+				09D38BA4F6E7E5544A19369F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F0D91CE062C543FF8DEA8B26 /* Build configuration list for PBXProject "StreakForge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E03906829F2DDFA4925E6FEE /* Debug */,
+				7EBF218A44A1B2C676DF8BD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DBB479F6A0F17AF4DAD5BD0A /* Project object */;
+}
