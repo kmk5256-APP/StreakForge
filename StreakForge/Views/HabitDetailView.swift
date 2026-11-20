@@ -9,100 +9,108 @@ struct HabitDetailView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 28) {
-                // Progress Ring
+            VStack(spacing: 32) {
+                // Elegant progress ring
                 ZStack {
                     Circle()
-                        .stroke(Color.gray.opacity(0.15), lineWidth: 14)
-                        .frame(width: 180, height: 180)
+                        .stroke(Color.gray.opacity(0.12), lineWidth: 12)
+                        .frame(width: 170, height: 170)
                     
                     Circle()
                         .trim(from: 0, to: min(CGFloat(habit.currentStreak) / 30.0, 1.0))
                         .stroke(
-                            LinearGradient(colors: [Color(hex: habit.colorHex), Color(hex: habit.colorHex).opacity(0.6)], startPoint: .top, endPoint: .bottom),
-                            style: StrokeStyle(lineWidth: 14, lineCap: .round)
+                            Color(hex: habit.colorHex),
+                            style: StrokeStyle(lineWidth: 12, lineCap: .round)
                         )
-                        .frame(width: 180, height: 180)
+                        .frame(width: 170, height: 170)
                         .rotationEffect(.degrees(-90))
-                        .animation(.spring(response: 0.6, dampingFraction: 0.8), value: habit.currentStreak)
+                        .animation(.spring(response: 0.55, dampingFraction: 0.8), value: habit.currentStreak)
                     
-                    VStack(spacing: 4) {
+                    VStack(spacing: 2) {
                         Image(systemName: habit.icon)
-                            .font(.largeTitle)
+                            .font(.title)
                             .foregroundStyle(Color(hex: habit.colorHex))
                         Text("\(habit.currentStreak)")
-                            .font(.system(size: 48, weight: .bold, design: .rounded))
+                            .font(.system(size: 44, weight: .semibold, design: .rounded))
                         Text("day streak")
-                            .font(.subheadline)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                 }
-                .padding(.top, 12)
+                .padding(.top, 8)
                 
                 Text(habit.name)
-                    .font(.title.bold())
+                    .font(.title2.weight(.semibold))
+                    .multilineTextAlignment(.center)
                 
-                // Stats
-                HStack(spacing: 20) {
-                    StatPill(title: "Best", value: "\(habit.bestStreak)", icon: "trophy.fill")
-                    StatPill(title: "Total", value: "\(habit.completions.count)", icon: "checkmark.circle")
-                    StatPill(title: "Rate", value: String(format: "%.0f%%", habit.completionRate * 100), icon: "chart.line.uptrend.xyaxis")
+                // Clean stats row
+                HStack(spacing: 12) {
+                    StatCard(title: "Best", value: "\(habit.bestStreak)", icon: "trophy.fill")
+                    StatCard(title: "Total", value: "\(habit.completions.count)", icon: "checkmark")
+                    StatCard(title: "Rate", value: String(format: "%.0f%%", habit.completionRate * 100), icon: "chart.bar.fill")
                 }
                 
-                // Heat Map
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Last 30 Days")
+                // Soft heat map
+                VStack(alignment: .leading, spacing: 14) {
+                    Text("Last 30 days")
                         .font(.headline)
+                        .padding(.horizontal, 4)
                     
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 7), spacing: 6) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 7), spacing: 5) {
                         ForEach(0..<30, id: \.self) { offset in
                             let date = Calendar.current.date(byAdding: .day, value: -29 + offset, to: Date())!
                             let completed = habit.completions.contains { Calendar.current.isDate($0, inSameDayAs: date) }
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(completed ? Color(hex: habit.colorHex) : Color.gray.opacity(0.15))
-                                .frame(height: 36)
+                            
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(completed ? Color(hex: habit.colorHex) : Color(.systemGray6))
+                                .frame(height: 34)
                                 .overlay(
                                     Text("\(Calendar.current.component(.day, from: date))")
-                                        .font(.caption2)
-                                        .foregroundStyle(completed ? .white : .secondary)
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundStyle(completed ? .white.opacity(0.9) : .secondary)
                                 )
                         }
                     }
                 }
-                .padding()
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .padding(16)
+                .background(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                )
             }
-            .padding()
+            .padding(.horizontal, 20)
+            .padding(.bottom, 32)
         }
+        .background(Color(.systemGroupedBackground))
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Button("Edit", systemImage: "pencil") { showingEdit = true }
+                    Divider()
                     Button("Delete", systemImage: "trash", role: .destructive) { showingDelete = true }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis")
                 }
             }
         }
         .sheet(isPresented: $showingEdit) {
             AddHabitView(habitToEdit: habit)
         }
-        .alert("Delete Habit?", isPresented: $showingDelete) {
+        .alert("Delete this habit?", isPresented: $showingDelete) {
             Button("Delete", role: .destructive) {
                 modelContext.delete(habit)
                 dismiss()
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This will permanently remove \"\(habit.name)\" and its history.")
+            Text("All history for \"\(habit.name)\" will be removed.")
         }
     }
 }
 
-struct StatPill: View {
+struct StatCard: View {
     let title: String
     let value: String
     let icon: String
@@ -110,16 +118,19 @@ struct StatPill: View {
     var body: some View {
         VStack(spacing: 6) {
             Image(systemName: icon)
+                .font(.caption)
                 .foregroundStyle(.secondary)
             Text(value)
-                .font(.title3.bold())
+                .font(.title3.weight(.semibold))
             Text(title)
-                .font(.caption)
+                .font(.caption2)
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.vertical, 14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(.ultraThinMaterial)
+        )
     }
 }

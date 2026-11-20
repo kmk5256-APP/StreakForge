@@ -10,11 +10,12 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                // Soft ambient background
                 LinearGradient(
                     colors: [
                         Color(.systemBackground),
-                        Color.indigo.opacity(0.12),
-                        Color.purple.opacity(0.08)
+                        Color.indigo.opacity(0.06),
+                        Color.purple.opacity(0.04)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -22,71 +23,91 @@ struct ContentView: View {
                 .ignoresSafeArea()
                 
                 if habits.isEmpty {
-                    VStack(spacing: 20) {
-                        Image(systemName: "flame.fill")
-                            .font(.system(size: 70))
-                            .foregroundStyle(
-                                LinearGradient(colors: [.orange, .red], startPoint: .top, endPoint: .bottom)
-                            )
-                            .symbolEffect(.bounce, options: .repeating)
-                        
-                        Text("Forge Your First Streak")
-                            .font(.title2.bold())
-                        
-                        Text("Small actions. Unstoppable momentum.")
-                            .foregroundStyle(.secondary)
-                        
-                        Button("Add Habit") { showingAdd = true }
-                            .buttonStyle(.borderedProminent)
-                            .controlSize(.large)
-                    }
+                    emptyState
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: 16) {
+                        LazyVStack(spacing: 14) {
                             ForEach(habits) { habit in
                                 NavigationLink {
                                     HabitDetailView(habit: habit)
                                 } label: {
-                                    HabitRow(habit: habit, onToggle: {
-                                        withAnimation(.spring(response: 0.45, dampingFraction: 0.7)) {
+                                    HabitRow(habit: habit) {
+                                        withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                                             habit.toggleToday()
                                         }
-                                        if let milestone = habit.milestone {
-                                            celebratingMilestone = milestone
+                                        if let m = habit.milestone {
+                                            celebratingMilestone = m
                                         }
-                                    })
+                                    }
                                 }
                                 .buttonStyle(.plain)
                             }
                         }
-                        .padding()
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
                     }
                 }
             }
             .navigationTitle("StreakForge")
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showingAdd = true
                     } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
-                            .symbolEffect(.pulse)
+                        Image(systemName: "plus")
+                            .font(.title3.weight(.semibold))
+                            .foregroundStyle(.primary)
+                            .frame(width: 36, height: 36)
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
                     }
                 }
             }
             .sheet(isPresented: $showingAdd) {
                 AddHabitView()
             }
-            .alert("Milestone!", isPresented: Binding(
+            .alert("Milestone reached", isPresented: Binding(
                 get: { celebratingMilestone != nil },
                 set: { if !$0 { celebratingMilestone = nil } }
             )) {
-                Button("Awesome") { celebratingMilestone = nil }
+                Button("Continue") { celebratingMilestone = nil }
             } message: {
-                Text("You've hit a \(celebratingMilestone ?? 0)-day streak! Keep forging.")
+                Text("Amazing — \(celebratingMilestone ?? 0) day streak. Keep the momentum.")
             }
         }
+    }
+    
+    private var emptyState: some View {
+        VStack(spacing: 24) {
+            Image(systemName: "flame.fill")
+                .font(.system(size: 64))
+                .foregroundStyle(
+                    LinearGradient(colors: [.orange, .red.opacity(0.85)], startPoint: .top, endPoint: .bottom)
+                )
+                .symbolEffect(.pulse, options: .repeating.speed(0.6))
+            
+            VStack(spacing: 8) {
+                Text("Start your first streak")
+                    .font(.title2.weight(.semibold))
+                Text("Small daily actions create lasting change.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            
+            Button {
+                showingAdd = true
+            } label: {
+                Text("Add Habit")
+                    .font(.headline)
+                    .frame(maxWidth: 200)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .tint(.indigo)
+        }
+        .padding()
     }
 }
 
@@ -98,35 +119,26 @@ struct HabitRow: View {
         HStack(spacing: 16) {
             ZStack {
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: habit.colorHex).opacity(0.3), Color(hex: habit.colorHex).opacity(0.1)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 60, height: 60)
+                    .fill(Color(hex: habit.colorHex).opacity(0.18))
+                    .frame(width: 56, height: 56)
                 
                 Image(systemName: habit.icon)
-                    .font(.title2)
+                    .font(.title3)
                     .foregroundStyle(Color(hex: habit.colorHex))
-                    .symbolEffect(.bounce, value: habit.isCompletedToday)
             }
             
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(habit.name)
-                    .font(.headline)
+                    .font(.body.weight(.medium))
+                    .lineLimit(1)
                 
-                HStack(spacing: 8) {
-                    Label("\(habit.currentStreak)", systemImage: "flame.fill")
-                        .font(.subheadline)
+                HStack(spacing: 6) {
+                    Image(systemName: "flame.fill")
+                        .font(.caption2)
                         .foregroundStyle(.orange)
-                    
-                    if habit.bestStreak > habit.currentStreak {
-                        Text("Best \(habit.bestStreak)")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+                    Text("\(habit.currentStreak) day streak")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
             }
             
@@ -134,16 +146,18 @@ struct HabitRow: View {
             
             Button(action: onToggle) {
                 Image(systemName: habit.isCompletedToday ? "checkmark.circle.fill" : "circle")
-                    .font(.title)
-                    .foregroundStyle(habit.isCompletedToday ? Color(hex: habit.colorHex) : .secondary)
-                    .symbolEffect(.bounce, value: habit.isCompletedToday)
+                    .font(.title2)
+                    .foregroundStyle(habit.isCompletedToday ? Color(hex: habit.colorHex) : Color(.systemGray3))
+                    .contentTransition(.symbolEffect(.replace))
             }
             .buttonStyle(.plain)
         }
-        .padding()
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-        .shadow(color: Color(hex: habit.colorHex).opacity(0.15), radius: 12, y: 6)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .shadow(color: .black.opacity(0.04), radius: 10, y: 4)
+        )
     }
 }
 
