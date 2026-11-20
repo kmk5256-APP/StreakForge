@@ -1,111 +1,143 @@
 import SwiftUI
+import SwiftData
 
 struct HabitDetailView: View {
     let habit: Habit
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showingEdit = false
     @State private var showingDelete = false
-    
+    @State private var showingDeleteError = false
+
     var body: some View {
-        ScrollView {
-            VStack(spacing: 32) {
-                // Elegant progress ring
-                ZStack {
-                    Circle()
-                        .stroke(Color.gray.opacity(0.12), lineWidth: 12)
-                        .frame(width: 170, height: 170)
-                    
-                    Circle()
-                        .trim(from: 0, to: min(CGFloat(habit.currentStreak) / 30.0, 1.0))
-                        .stroke(
-                            Color(hex: habit.colorHex),
-                            style: StrokeStyle(lineWidth: 12, lineCap: .round)
-                        )
-                        .frame(width: 170, height: 170)
-                        .rotationEffect(.degrees(-90))
-                        .animation(.spring(response: 0.55, dampingFraction: 0.8), value: habit.currentStreak)
-                    
-                    VStack(spacing: 2) {
-                        Image(systemName: habit.icon)
-                            .font(.title)
-                            .foregroundStyle(Color(hex: habit.colorHex))
-                        Text("\(habit.currentStreak)")
-                            .font(.system(size: 44, weight: .semibold, design: .rounded))
-                        Text("day streak")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+        TimelineView(.everyMinute) { timeline in
+            let calendar = Calendar.current
+            let progress = habit.progress(on: timeline.date, calendar: calendar)
+            ScrollView {
+                VStack(spacing: 28) {
+                    progressRing(progress.currentStreak)
+                    Text(habit.name)
+                        .font(.title2.weight(.semibold))
+                        .multilineTextAlignment(.center)
+                    stats(progress)
+                    history(progress.completedDays, on: timeline.date, calendar: calendar)
                 }
-                .padding(.top, 8)
-                
-                Text(habit.name)
-                    .font(.title2.weight(.semibold))
-                    .multilineTextAlignment(.center)
-                
-                // Clean stats row
-                HStack(spacing: 12) {
-                    StatCard(title: "Best", value: "\(habit.bestStreak)", icon: "trophy.fill")
-                    StatCard(title: "Total", value: "\(habit.completions.count)", icon: "checkmark")
-                    StatCard(title: "Rate", value: String(format: "%.0f%%", habit.completionRate * 100), icon: "chart.bar.fill")
-                }
-                
-                // Soft heat map
-                VStack(alignment: .leading, spacing: 14) {
-                    Text("Last 30 days")
-                        .font(.headline)
-                        .padding(.horizontal, 4)
-                    
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 7), spacing: 5) {
-                        ForEach(0..<30, id: \.self) { offset in
-                            let date = Calendar.current.date(byAdding: .day, value: -29 + offset, to: Date())!
-                            let completed = habit.completions.contains { Calendar.current.isDate($0, inSameDayAs: date) }
-                            
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(completed ? Color(hex: habit.colorHex) : Color(.systemGray6))
-                                .frame(height: 34)
-                                .overlay(
-                                    Text("\(Calendar.current.component(.day, from: date))")
-                                        .font(.system(size: 10, weight: .medium))
-                                        .foregroundStyle(completed ? .white.opacity(0.9) : .secondary)
-                                )
-                        }
-                    }
-                }
-                .padding(16)
-                .background(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(.ultraThinMaterial)
-                )
+                .frame(maxWidth: 640)
+                .padding()
+                .frame(maxWidth: .infinity)
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 32)
         }
         .background(Color(.systemGroupedBackground))
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu {
+                Menu("Habit Options", systemImage: "ellipsis") {
                     Button("Edit", systemImage: "pencil") { showingEdit = true }
                     Divider()
                     Button("Delete", systemImage: "trash", role: .destructive) { showingDelete = true }
-                } label: {
-                    Image(systemName: "ellipsis")
                 }
+                .accessibilityIdentifier("habit.menu")
             }
         }
         .sheet(isPresented: $showingEdit) {
             AddHabitView(habitToEdit: habit)
         }
-        .alert("Delete this habit?", isPresented: $showingDelete) {
-            Button("Delete", role: .destructive) {
-                modelContext.delete(habit)
-                dismiss()
-            }
+        .alert("Delete Habit?", isPresented: $showingDelete) {
+            Button("Delete", role: .destructive, action: deleteHabit)
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("All history for \"\(habit.name)\" will be removed.")
+            Text("This will permanently remove “\(habit.name)” and its history.")
+        }
+        .alert("Couldn’t Delete Habit", isPresented: $showingDeleteError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Please try again.")
+        }
+    }
+
+    private func progressRing(_ streak: Int) -> some View {
+        let color = Color(hex: habit.colorHex)
+        return ZStack {
+            Circle().strokeBorder(.quaternary, lineWidth: 12)
+            Circle()
+                .inset(by: 6)
+                .trim(from: 0, to: min(Double(streak) / 30, 1))
+                .stroke(color, style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .animation(reduceMotion ? nil : .spring(response: 0.55, dampingFraction: 0.8), value: streak)
+            VStack(spacing: 4) {
+                Image(systemName: habit.icon)
+                    .font(.title)
+                    .foregroundStyle(color)
+                Text(streak, format: .number)
+                    .font(.system(.largeTitle, design: .rounded, weight: .semibold))
+                Text("day streak")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(20)
+            .minimumScaleFactor(0.65)
+        }
+        .frame(width: 170, height: 170)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(streak) day streak")
+    }
+
+    private func stats(_ progress: HabitProgress) -> some View {
+        let layout = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 8)) : AnyLayout(HStackLayout(spacing: 8))
+        return layout {
+            StatCard(title: "Best", value: progress.bestStreak.formatted(), icon: "trophy.fill")
+            StatCard(title: "Total", value: progress.completedDays.count.formatted(), icon: "checkmark")
+            StatCard(title: "Rate", value: progress.completionRate.formatted(.percent.precision(.fractionLength(0))),
+                     icon: "chart.bar.fill")
+        }
+    }
+
+    private func history(_ completedDays: Set<Date>, on date: Date, calendar: Calendar) -> some View {
+        let today = calendar.startOfDay(for: date)
+        let lastMonth = (-29...0).compactMap { calendar.date(byAdding: .day, value: $0, to: today) }
+        let color = Color(hex: habit.colorHex)
+
+        return VStack(alignment: .leading, spacing: 12) {
+            Text("Last 30 days")
+                .font(.headline)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 7), spacing: 5) {
+                ForEach(lastMonth, id: \.self) { day in
+                    let isComplete = completedDays.contains(day)
+                    VStack(spacing: 2) {
+                        Text(day, format: .dateTime.day())
+                            .font(.caption2)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                        if isComplete {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 7, weight: .semibold))
+                        }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 36)
+                    .background(isComplete ? color.opacity(0.22) : Color.secondary.opacity(0.08),
+                                in: RoundedRectangle(cornerRadius: 7))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(day.formatted(.dateTime.month(.wide).day()))
+                    .accessibilityValue(isComplete ? "Complete" : "Incomplete")
+                }
+            }
+        }
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
+    }
+
+    private func deleteHabit() {
+        modelContext.delete(habit)
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            modelContext.rollback()
+            showingDeleteError = true
         }
     }
 }
@@ -114,7 +146,7 @@ struct StatCard: View {
     let title: String
     let value: String
     let icon: String
-    
+
     var body: some View {
         VStack(spacing: 6) {
             Image(systemName: icon)
@@ -128,9 +160,9 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(.ultraThinMaterial)
-        )
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(value)
     }
 }

@@ -21,44 +21,55 @@ class Habit {
         self.bestStreak = 0
     }
     
-    var currentStreak: Int {
-        let calendar = Calendar.current
-        let sorted = completions.map { calendar.startOfDay(for: $0) }.sorted(by: >)
-        guard !sorted.isEmpty else { return 0 }
-        
-        var streak = 0
-        var expected = calendar.startOfDay(for: Date())
-        
-        for date in sorted {
-            if date == expected {
-                streak += 1
-                expected = calendar.date(byAdding: .day, value: -1, to: expected)!
-            } else if date < expected {
-                break
-            }
+    func progress(on date: Date = .now, calendar: Calendar = .current) -> HabitProgress {
+        let firstDay = calendar.startOfDay(for: createdAt)
+        let today = calendar.startOfDay(for: date)
+        let days = Set(completions.map { calendar.startOfDay(for: $0) }.filter {
+            $0 >= firstDay && $0 <= today
+        })
+        let elapsed = max((calendar.dateComponents([.day], from: firstDay, to: today).day ?? 0) + 1, 1)
+        var run = 0
+        var best = 0
+        var previous: Date?
+
+        for day in days.sorted() {
+            let next = previous.flatMap { calendar.date(byAdding: .day, value: 1, to: $0) }
+            run = next == day ? run + 1 : 1
+            best = max(best, run)
+            previous = day
         }
-        return streak
+
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)
+        let isCurrent = previous != nil && (previous == today || previous == yesterday)
+        return HabitProgress(
+            completedDays: days,
+            isCompletedToday: days.contains(today),
+            currentStreak: isCurrent ? run : 0,
+            bestStreak: best,
+            completionRate: Double(days.count) / Double(elapsed)
+        )
     }
-    
-    var isCompletedToday: Bool {
-        completions.contains { Calendar.current.isDateInToday($0) }
-    }
-    
-    var completionRate: Double {
-        let days = max(Calendar.current.dateComponents([.day], from: createdAt, to: Date()).day ?? 1, 1)
-        return Double(completions.count) / Double(days)
-    }
-    
-    func toggleToday() {
-        let calendar = Calendar.current
-        if let index = completions.firstIndex(where: { calendar.isDateInToday($0) }) {
-            completions.remove(at: index)
+
+    @discardableResult
+    func toggleToday(on date: Date = .now, calendar: Calendar = .current) -> Bool {
+        let didComplete = !completions.contains { calendar.isDate($0, inSameDayAs: date) }
+        if didComplete {
+            completions.append(date)
         } else {
-            completions.append(Date())
+            completions.removeAll { calendar.isDate($0, inSameDayAs: date) }
         }
-        bestStreak = max(bestStreak, currentStreak)
+        bestStreak = progress(on: date, calendar: calendar).bestStreak
+        return didComplete
     }
-    
+}
+
+struct HabitProgress {
+    let completedDays: Set<Date>
+    let isCompletedToday: Bool
+    let currentStreak: Int
+    let bestStreak: Int
+    let completionRate: Double
+
     var milestone: Int? {
         let milestones = [7, 14, 30, 60, 100, 365]
         return milestones.first { $0 == currentStreak }

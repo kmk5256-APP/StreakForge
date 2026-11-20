@@ -4,86 +4,113 @@ import SwiftData
 struct AddHabitView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     var habitToEdit: Habit?
-    
+
     @State private var name = ""
     @State private var selectedIcon = "flame.fill"
     @State private var selectedColor = "#6366F1"
-    
-    let icons = ["flame.fill", "book.fill", "figure.run", "drop.fill", "moon.zzz.fill", "heart.fill", "brain.head.profile", "pills.fill", "leaf.fill", "star.fill", "dumbbell.fill", "bed.double.fill", "cup.and.saucer.fill", "pencil.and.outline", "sun.max.fill"]
-    let colors = ["#6366F1", "#EC4899", "#10B981", "#F59E0B", "#3B82F6", "#8B5CF6", "#EF4444", "#06B6D4"]
-    
-    var isEditing: Bool { habitToEdit != nil }
-    
+    @State private var showingSaveError = false
+
+    private struct Choice: Identifiable {
+        let id: String
+        let name: String
+    }
+
+    private let icons = [
+        Choice(id: "flame.fill", name: "Flame"),
+        Choice(id: "book.fill", name: "Book"),
+        Choice(id: "figure.run", name: "Run"),
+        Choice(id: "drop.fill", name: "Water"),
+        Choice(id: "moon.zzz.fill", name: "Moon"),
+        Choice(id: "heart.fill", name: "Heart"),
+        Choice(id: "brain.head.profile", name: "Mind"),
+        Choice(id: "pills.fill", name: "Pills"),
+        Choice(id: "leaf.fill", name: "Leaf"),
+        Choice(id: "star.fill", name: "Star"),
+        Choice(id: "dumbbell.fill", name: "Dumbbell"),
+        Choice(id: "bed.double.fill", name: "Bed"),
+        Choice(id: "cup.and.saucer.fill", name: "Cup"),
+        Choice(id: "pencil.and.outline", name: "Pencil"),
+        Choice(id: "sun.max.fill", name: "Sun"),
+    ]
+    private let colors = [
+        Choice(id: "#6366F1", name: "Indigo"),
+        Choice(id: "#EC4899", name: "Pink"),
+        Choice(id: "#10B981", name: "Green"),
+        Choice(id: "#F59E0B", name: "Amber"),
+        Choice(id: "#3B82F6", name: "Blue"),
+        Choice(id: "#8B5CF6", name: "Purple"),
+        Choice(id: "#EF4444", name: "Red"),
+        Choice(id: "#06B6D4", name: "Cyan"),
+    ]
+    private let columns = [GridItem(.adaptive(minimum: 44), spacing: 8)]
+    private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
+
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("Name") {
                     TextField("Habit name", text: $name)
-                        .font(.body)
-                } header: {
-                    Text("Name")
+                        .accessibilityIdentifier("habit.name")
                 }
-                
-                Section {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 12) {
-                        ForEach(icons, id: \.self) { icon in
-                            Image(systemName: icon)
-                                .font(.title3)
-                                .frame(width: 46, height: 46)
-                                .background(
-                                    selectedIcon == icon
-                                    ? Color(hex: selectedColor).opacity(0.22)
-                                    : Color.clear
-                                )
-                                .clipShape(Circle())
-                                .onTapGesture {
-                                    withAnimation(.easeOut(duration: 0.15)) {
-                                        selectedIcon = icon
-                                    }
-                                }
+
+                Section("Icon") {
+                    LazyVGrid(columns: columns, spacing: 8) {
+                        ForEach(icons) { icon in
+                            Button {
+                                selectedIcon = icon.id
+                            } label: {
+                                Image(systemName: icon.id)
+                                    .font(.title3)
+                                    .frame(width: 44, height: 44)
+                                    .background(selectedIcon == icon.id ? Color(hex: selectedColor).opacity(0.22) : .clear, in: Circle())
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(icon.name)
+                            .accessibilityAddTraits(selectedIcon == icon.id ? .isSelected : [])
                         }
                     }
-                    .padding(.vertical, 8)
-                } header: {
-                    Text("Icon")
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: selectedIcon)
                 }
-                
-                Section {
-                    HStack(spacing: 14) {
-                        ForEach(colors, id: \.self) { color in
-                            Circle()
-                                .fill(Color(hex: color))
-                                .frame(width: 30, height: 30)
-                                .overlay(
-                                    Circle()
-                                        .stroke(selectedColor == color ? Color.primary : Color.clear, lineWidth: 2.5)
-                                        .padding(-3)
-                                )
-                                .onTapGesture {
-                                    withAnimation(.easeOut(duration: 0.15)) {
-                                        selectedColor = color
+
+                Section("Color") {
+                    LazyVGrid(columns: columns, spacing: 8) {
+                        ForEach(colors) { color in
+                            Button {
+                                selectedColor = color.id
+                            } label: {
+                                Circle()
+                                    .fill(Color(hex: color.id))
+                                    .frame(width: 26, height: 26)
+                                    .overlay {
+                                        if selectedColor == color.id {
+                                            Circle().strokeBorder(.primary, lineWidth: 2)
+                                        }
                                     }
-                                }
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(color.name)
+                            .accessibilityAddTraits(selectedColor == color.id ? .isSelected : [])
                         }
                     }
-                    .padding(.vertical, 4)
-                } header: {
-                    Text("Color")
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: selectedColor)
                 }
             }
-            .navigationTitle(isEditing ? "Edit Habit" : "New Habit")
+            .navigationTitle(habitToEdit == nil ? "New Habit" : "Edit Habit")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(isEditing ? "Save" : "Add") {
-                        save()
-                    }
-                    .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    .fontWeight(.semibold)
+                    Button(habitToEdit == nil ? "Add" : "Save", action: saveHabit)
+                        .fontWeight(.semibold)
+                        .disabled(trimmedName.isEmpty)
+                        .accessibilityIdentifier("habit.save")
                 }
             }
             .onAppear {
@@ -93,21 +120,28 @@ struct AddHabitView: View {
                     selectedColor = habit.colorHex
                 }
             }
+            .alert("Couldn’t Save Habit", isPresented: $showingSaveError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Please try again.")
+            }
         }
     }
-    
-    private func save() {
-        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-        
+
+    private func saveHabit() {
         if let habit = habitToEdit {
-            habit.name = trimmed
+            habit.name = trimmedName
             habit.icon = selectedIcon
             habit.colorHex = selectedColor
         } else {
-            let habit = Habit(name: trimmed, icon: selectedIcon, colorHex: selectedColor)
-            modelContext.insert(habit)
+            modelContext.insert(Habit(name: trimmedName, icon: selectedIcon, colorHex: selectedColor))
         }
-        dismiss()
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            modelContext.rollback()
+            showingSaveError = true
+        }
     }
 }
